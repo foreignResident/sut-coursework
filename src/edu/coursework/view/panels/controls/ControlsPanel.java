@@ -35,9 +35,9 @@ public class ControlsPanel extends BasePanel {
        eventsPanel = new EventsPanel(330,120, innerBorder, controller);
        eventsScalePanel = new EventsScalePanel(330,80, innerBorder);
        eventsButtonsPanel = new EventsButtonPanel(330,80, innerBorder, controller);
-       amountStatisticPanel = new StatisticPanel(330, 110, innerBorder,
+       amountStatisticPanel = new StatisticPanel(330, 150, innerBorder,
                new String[]{"Class A", "Class B", "Class C"}, Color.RED, Color.BLACK);
-       scaleStatisticPanel = new StatisticPanel(330, 110, innerBorder,
+       scaleStatisticPanel = new StatisticPanel(330, 150, innerBorder,
                new String[]{"<30%", "30-60%", ">60%"}, Color.BLUE, Color.BLACK);
 
        amountStatistic = new JLabel("Statistics by amount");
