@@ -20,5 +20,7 @@ public class CircleEvent extends BaseEvent {
         //draw figure
         g.setColor(getFigureColor());
         g.fillOval(x1, y1, radius, radius);
+
+
     }
 }
