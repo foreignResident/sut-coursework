@@ -21,28 +21,28 @@ public class EventsScalePanel extends BasePanel {
 
         isFixedSize = new JRadioButton("fixed", true);
         isFixedSize.addActionListener((event) -> {
-            if(isInRange.isSelected() && isFixedSize.isSelected()) {
+            if (isInRange.isSelected() && isFixedSize.isSelected()) {
                 //deselect inRange if fixed size selected
                 isInRange.setSelected(false);
-            } else if(!isInRange.isSelected() && !isFixedSize.isSelected()) {
+            } else if (!isInRange.isSelected() && !isFixedSize.isSelected()) {
                 //avoid case when both isInRange and isFixedSize
                 isFixedSize.setSelected(true);
             }
         });
-        fixedSizeText = new JTextField("10",5);
+        fixedSizeText = new JTextField("10", 5);
 
         isInRange = new JRadioButton("in range", false);
         isInRange.addActionListener((event) -> {
             //deselect is fixed size if inRange selected
-            if(isFixedSize.isSelected() && isInRange.isSelected()) {
+            if (isFixedSize.isSelected() && isInRange.isSelected()) {
                 isFixedSize.setSelected(false);
-            } else if(!isInRange.isSelected() && !isFixedSize.isSelected()) {
+            } else if (!isInRange.isSelected() && !isFixedSize.isSelected()) {
                 //avoid case when both isInRange and isFixedSize
                 isInRange.setSelected(true);
             }
         });
-        fromTextField = new JTextField("0",3);
-        toTextField = new JTextField("0",3);
+        fromTextField = new JTextField("0", 3);
+        toTextField = new JTextField("0", 3);
 
         //create first row
         JPanel firstRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 3));

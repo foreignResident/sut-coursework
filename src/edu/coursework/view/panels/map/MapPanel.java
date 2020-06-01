@@ -32,30 +32,30 @@ public class MapPanel extends BasePanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if(image != null) {
-            g.drawImage(image,0,0,getWidth(), getHeight(), this);
+        if (image != null) {
+            g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
         }
-        if(eventList != null) {
-            eventList.forEach( event -> event.draw(g) );
+        if (eventList != null) {
+            eventList.forEach(event -> event.draw(g));
         }
         //set up font for grid metrics
         g.setFont(new Font("Serif", Font.PLAIN, 14));
         //drawing grid
-        for (int i = 50; i < getWidth(); i+=50) {
+        for (int i = 50; i < getWidth(); i += 50) {
             //draw grid lines
             g.setColor(Color.BLACK);
-            g.drawLine(i,0, i, getHeight());
-            g.drawLine(0, i,getWidth(), i);
+            g.drawLine(i, 0, i, getHeight());
+            g.drawLine(0, i, getWidth(), i);
 
             //draw dim containers
             g.setColor(Color.WHITE);
-            g.fillRect(i-10, 5, 20,14);
-            g.fillRect(5, i-7, 20,14);
+            g.fillRect(i - 10, 5, 20, 14);
+            g.fillRect(5, i - 7, 20, 14);
 
             //draw dimensions in containers
             g.setColor(Color.BLACK);
-            g.drawString(String.valueOf(i), i-10, 17);
-            g.drawString(String.valueOf(i), 5, i+5);
+            g.drawString(String.valueOf(i), i - 10, 17);
+            g.drawString(String.valueOf(i), 5, i + 5);
         }
 
     }

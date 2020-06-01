@@ -37,8 +37,8 @@ public class EventsPanel extends BasePanel {
 
     public List<EventRowItem> getSelectedElements() {
         List<EventRowItem> selectedElements = new ArrayList<>();
-        for(EventRowItem eventRowItem : eventRowItemList) {
-            if(eventRowItem.getIsCheckBoxSelected()) {
+        for (EventRowItem eventRowItem : eventRowItemList) {
+            if (eventRowItem.getIsCheckBoxSelected()) {
                 selectedElements.add(eventRowItem);
             }
         }

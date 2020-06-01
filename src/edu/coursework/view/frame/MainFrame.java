@@ -18,7 +18,7 @@ public class MainFrame extends JFrame {
     private ControlsPanel controlsPanel;
 
     public MainFrame() {
-        setSize(1050,650);
+        setSize(1200,750);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -29,8 +29,8 @@ public class MainFrame extends JFrame {
 
         //add child panels
         controller = new MainController();
-        mapPanel = new MapPanel(Dimensions.MAP_WIDTH, Dimensions.MAP_HEIGHT, border);
-        controlsPanel = new ControlsPanel(300, Dimensions.MAP_HEIGHT, border, controller);
+        mapPanel = new MapPanel(Dimensions.MAP_WIDTH, 650, border);
+        controlsPanel = new ControlsPanel(350, 700, border, controller);
         controller.attachViews(mapPanel, controlsPanel);
         add(mapPanel);
         add(controlsPanel);
