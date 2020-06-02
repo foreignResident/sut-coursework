@@ -6,10 +6,12 @@ import edu.coursework.view.panels.BasePanel;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapPanel extends BasePanel {
+public class MapPanel extends BasePanel implements MouseListener {
 
     private List<BaseEvent> eventList = new ArrayList<>();
     private Image image;
@@ -17,6 +19,7 @@ public class MapPanel extends BasePanel {
     public MapPanel(int width, int height, Border border) {
         super(width, height, border, new FlowLayout());
         this.image = new ImageIcon("src/img/part_of_map_of_UA.png").getImage();
+        addMouseListener(this);
     }
 
     //set eventList and draw events from them
@@ -35,12 +38,12 @@ public class MapPanel extends BasePanel {
         if (image != null) {
             g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
         }
-        if (eventList != null) {
-            eventList.forEach(event -> event.draw(g));
-        }
+
         //set up font for grid metrics
         g.setFont(new Font("Serif", Font.PLAIN, 14));
         //drawing grid
+
+
         for (int i = 50; i < getWidth(); i += 50) {
             //draw grid lines
             g.setColor(Color.BLACK);
@@ -57,6 +60,35 @@ public class MapPanel extends BasePanel {
             g.drawString(String.valueOf(i), i - 10, 17);
             g.drawString(String.valueOf(i), 5, i + 5);
         }
+
+        if (eventList != null) {
+            eventList.forEach(event -> event.draw(g));
+        }
+
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
 
     }
 }
