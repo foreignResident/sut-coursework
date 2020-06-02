@@ -15,11 +15,14 @@ public class DjikstraPanel extends BasePanel {
     private JLabel title;
     private List<DjikstraEventRowItem> eventRowItemList = new ArrayList<>();
     private ButtonGroup radioButtonGroup;
+    private Button button;
 
     public DjikstraPanel(int width, int height, Border border) {
-        super(width, height, border, new FlowLayout());
+        super(width, height, border, new FlowLayout(FlowLayout.LEFT, 10, 5));
 
         radioButtonGroup = new ButtonGroup();
+        title = new JLabel("Dijkstra's algorithm");
+        add(title);
 
         DjikstraEventRowItem firstRow = new DjikstraEventRowItem("Triangle",
                 new FlowLayout(FlowLayout.LEFT, 5, 3), Figure.Triangle);
@@ -38,6 +41,11 @@ public class DjikstraPanel extends BasePanel {
         eventRowItemList.add(thirdRow);
         add(thirdRow);
         radioButtonGroup.add(thirdRow.getRadioButton());
+
+        button = new Button("Add event");
+        add(button);
+
+
     }
 
 
