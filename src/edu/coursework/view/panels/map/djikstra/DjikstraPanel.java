@@ -1,5 +1,6 @@
 package edu.coursework.view.panels.map.djikstra;
 
+import edu.coursework.model.BaseEvent;
 import edu.coursework.model.Figure;
 import edu.coursework.view.panels.BasePanel;
 import edu.coursework.view.panels.controls.EventRowItem;
@@ -18,9 +19,12 @@ public class DjikstraPanel extends BasePanel {
     private ButtonGroup radioButtonGroup;
     private Button button;
     private boolean enabled = false;
+    private DjikstraConfigurator configurator;
 
     public DjikstraPanel(int width, int height, Border border) {
         super(width, height, border, new FlowLayout(FlowLayout.LEFT, 10, 5));
+
+        configurator = new DjikstraConfigurator();
 
         radioButtonGroup = new ButtonGroup();
         title = new JLabel("Dijkstra's algorithm");
