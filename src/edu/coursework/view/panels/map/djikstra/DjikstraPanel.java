@@ -1,5 +1,6 @@
 package edu.coursework.view.panels.map.djikstra;
 
+import edu.coursework.model.BaseEvent;
 import edu.coursework.model.Figure;
 import edu.coursework.view.panels.BasePanel;
 import edu.coursework.view.panels.controls.EventRowItem;
@@ -12,14 +13,18 @@ import java.util.List;
 
 public class DjikstraPanel extends BasePanel {
 
-    private JLabel title;
+    private JLabel title, scaleTitle;
+    private JTextField scaleTextField;
     private List<DjikstraEventRowItem> eventRowItemList = new ArrayList<>();
     private ButtonGroup radioButtonGroup;
     private Button button;
     private boolean enabled = false;
+    private DjikstraConfigurator configurator;
 
     public DjikstraPanel(int width, int height, Border border) {
         super(width, height, border, new FlowLayout(FlowLayout.LEFT, 10, 5));
+
+        configurator = new DjikstraConfigurator();
 
         radioButtonGroup = new ButtonGroup();
         title = new JLabel("Dijkstra's algorithm");
@@ -42,6 +47,12 @@ public class DjikstraPanel extends BasePanel {
         eventRowItemList.add(thirdRow);
         add(thirdRow);
         radioButtonGroup.add(thirdRow.getRadioButton());
+
+        scaleTitle = new JLabel("Scale");
+        scaleTextField = new JTextField("30", 4);
+
+        add(scaleTitle);
+        add(scaleTextField);
 
         button = new Button("Add event");
         button.addActionListener((event) -> changeLabel());
@@ -86,6 +97,14 @@ public class DjikstraPanel extends BasePanel {
 
     public void setButton(Button button) {
         this.button = button;
+    }
+
+    public String getActionCommand() {
+        return this.radioButtonGroup.getSelection().getActionCommand();
+    }
+
+    public int getScale() {
+        return Integer.parseInt(this.scaleTextField.getText());
     }
 
     @Override
