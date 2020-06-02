@@ -16,7 +16,7 @@ public class EventRowItem extends BasePanel {
     private Figure figure;
     private MainController controller;
 
-    public EventRowItem(String eventName, LayoutManager layoutManager, Figure figure, MainController controller) {
+    public EventRowItem(String eventName, LayoutManager layoutManager, Figure figure) {
         super(layoutManager);
         this.figure = figure;
         JLabel eventNameField = new JLabel(eventName);

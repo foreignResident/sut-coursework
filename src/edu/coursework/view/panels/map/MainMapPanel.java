@@ -1,16 +1,9 @@
 package edu.coursework.view.panels.map;
 
-import edu.coursework.controller.MainController;
-import edu.coursework.model.BaseEvent;
 import edu.coursework.utils.Dimensions;
 import edu.coursework.view.panels.BasePanel;
-import edu.coursework.view.panels.controls.DjikstraPanel;
-import edu.coursework.view.panels.controls.EventsButtonPanel;
-import edu.coursework.view.panels.controls.EventsPanel;
-import edu.coursework.view.panels.controls.EventsScalePanel;
-import edu.coursework.view.panels.statistic.StatisticPanel;
+import edu.coursework.view.panels.map.djikstra.DjikstraPanel;
 
-import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.*;

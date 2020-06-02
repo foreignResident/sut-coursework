@@ -18,19 +18,19 @@ public class EventsPanel extends BasePanel {
         super(width, height, border, new FlowLayout(FlowLayout.LEFT));
         //create first row
         EventRowItem firstRow = new EventRowItem("Events of class \"A\"",
-                new FlowLayout(FlowLayout.LEFT, 5, 3), Figure.Triangle, controller);
+                new FlowLayout(FlowLayout.LEFT, 5, 3), Figure.Triangle);
         eventRowItemList.add(firstRow);
         add(firstRow);
 
         //create second row
         EventRowItem secondRow = new EventRowItem("Events of class \"B\"",
-                new FlowLayout(FlowLayout.LEFT, 5, 3), Figure.Rectangle, controller);
+                new FlowLayout(FlowLayout.LEFT, 5, 3), Figure.Rectangle);
         eventRowItemList.add(secondRow);
         add(secondRow);
 
         //create third row
         EventRowItem thirdRow = new EventRowItem("Events of class \"C\"",
-                new FlowLayout(FlowLayout.LEFT, 5, 3), Figure.Circle, controller);
+                new FlowLayout(FlowLayout.LEFT, 5, 3), Figure.Circle);
         eventRowItemList.add(thirdRow);
         add(thirdRow);
     }

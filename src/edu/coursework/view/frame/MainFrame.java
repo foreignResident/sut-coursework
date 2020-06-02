@@ -1,11 +1,8 @@
 package edu.coursework.view.frame;
 
 import edu.coursework.controller.MainController;
-import edu.coursework.utils.Dimensions;
 import edu.coursework.view.panels.controls.ControlsPanel;
-import edu.coursework.view.panels.controls.DjikstraPanel;
 import edu.coursework.view.panels.map.MainMapPanel;
-import edu.coursework.view.panels.map.MapPanel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
