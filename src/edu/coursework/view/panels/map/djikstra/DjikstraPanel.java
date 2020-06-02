@@ -12,7 +12,8 @@ import java.util.List;
 
 public class DjikstraPanel extends BasePanel {
 
-    private JLabel title;
+    private JLabel title, scaleTitle;
+    private JTextField scaleTextField;
     private List<DjikstraEventRowItem> eventRowItemList = new ArrayList<>();
     private ButtonGroup radioButtonGroup;
     private Button button;
@@ -42,6 +43,12 @@ public class DjikstraPanel extends BasePanel {
         eventRowItemList.add(thirdRow);
         add(thirdRow);
         radioButtonGroup.add(thirdRow.getRadioButton());
+
+        scaleTitle = new JLabel("Scale");
+        scaleTextField = new JTextField("30", 4);
+
+        add(scaleTitle);
+        add(scaleTextField);
 
         button = new Button("Add event");
         button.addActionListener((event) -> changeLabel());
@@ -86,6 +93,14 @@ public class DjikstraPanel extends BasePanel {
 
     public void setButton(Button button) {
         this.button = button;
+    }
+
+    public String getActionCommand() {
+        return this.radioButtonGroup.getSelection().getActionCommand();
+    }
+
+    public int getScale() {
+        return Integer.parseInt(this.scaleTextField.getText());
     }
 
     @Override

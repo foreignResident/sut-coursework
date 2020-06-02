@@ -5,9 +5,9 @@ import edu.coursework.utils.Dimensions;
 import edu.coursework.view.panels.controls.ControlsPanel;
 import edu.coursework.view.panels.controls.EventRowItem;
 import edu.coursework.view.panels.map.MainMapPanel;
-import edu.coursework.view.panels.map.MapPanel;
+import edu.coursework.view.panels.map.djikstra.DjikstraPanel;
 
-import javax.crypto.spec.PSource;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -197,29 +197,31 @@ public class MainController implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         if (mainMapPanel.getDjikstraPanel().isEnabled()) {
+            Point point = e.getPoint();
             BaseEvent baseEvent = null;
-            switch (mainMapPanel.getDjikstraPanel().getRadioButtonGroup().getSelection().getActionCommand()) {
+            DjikstraPanel djikstraPanel = mainMapPanel.getDjikstraPanel();
+            switch (djikstraPanel.getActionCommand()) {
                 case "Triangle":
                     baseEvent = new TriangleEvent(
-                            30,
-                            randomInRange(0, Dimensions.MAP_WIDTH),
-                            randomInRange(0, Dimensions.MAP_HEIGHT),
+                            djikstraPanel.getScale(),
+                            (int) point.getX(),
+                            (int) point.getY(),
                             Figure.Triangle
                     );
                     break;
                 case "Circle":
                     baseEvent = new CircleEvent(
-                            30,
-                            randomInRange(0, Dimensions.MAP_WIDTH),
-                            randomInRange(0, Dimensions.MAP_HEIGHT),
+                            djikstraPanel.getScale(),
+                            (int) point.getX(),
+                            (int) point.getY(),
                             Figure.Circle
                     );
                     break;
                 case "Rectangle":
                     baseEvent = new RectangleEvent(
-                            30,
-                            randomInRange(0, Dimensions.MAP_WIDTH),
-                            randomInRange(0, Dimensions.MAP_HEIGHT),
+                            djikstraPanel.getScale(),
+                            (int) point.getX(),
+                            (int) point.getY(),
                             Figure.Rectangle
                     );
                     break;
