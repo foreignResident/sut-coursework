@@ -28,6 +28,11 @@ public class MapPanel extends BasePanel implements MouseListener {
         repaint();
     }
 
+    public void addEventToList(BaseEvent event){
+        this.eventList.add(event);
+        repaint();
+    }
+
     public List<BaseEvent> getEventList() {
         return eventList;
     }
