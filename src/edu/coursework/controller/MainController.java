@@ -4,26 +4,31 @@ import edu.coursework.model.*;
 import edu.coursework.utils.Dimensions;
 import edu.coursework.view.panels.controls.ControlsPanel;
 import edu.coursework.view.panels.controls.EventRowItem;
+import edu.coursework.view.panels.map.MainMapPanel;
 import edu.coursework.view.panels.map.MapPanel;
 
+import javax.crypto.spec.PSource;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainController {
+public class MainController implements MouseListener {
 
-    private MapPanel mapPanel;
+    private MainMapPanel mainMapPanel;
     private ControlsPanel controlsPanel;
     private List<BaseEvent> eventList = new ArrayList<>();
 
-    public void attachViews(MapPanel mapPanel, ControlsPanel controlsPanel) {
-        this.mapPanel = mapPanel;
+    public void attachViews(MainMapPanel mainMapPanel, ControlsPanel controlsPanel) {
+        this.mainMapPanel = mainMapPanel;
         this.controlsPanel = controlsPanel;
+        mainMapPanel.getMapPanel().addMouseListener(this);
     }
 
     //process show event btn click
     public void onEventsShowClicked() {
         List<EventRowItem> eventRowItems = controlsPanel.getEventsPanel().getSelectedElements();
-        if(controlsPanel.getEventsScalePanel().getIsFixedSize()) {
+        if (controlsPanel.getEventsScalePanel().getIsFixedSize()) {
             //if event have fixed scale generate it
             for (EventRowItem eventRowItem : eventRowItems) {
                 eventList.addAll(generateEvents(
@@ -43,7 +48,7 @@ public class MainController {
                         eventRowItem.getFigure()));
             }
         }
-        mapPanel.setEventList(eventList);
+        mainMapPanel.getMapPanel().setEventList(eventList);
         calculateAmountStatistics();
         calculateScaleStatistics();
     }
@@ -53,8 +58,8 @@ public class MainController {
         List<BaseEvent> eventsList = new ArrayList<>();
         int eventsAmount = randomInRange(fromAmount, toAmount);
         //create events in following amount
-        for(int i = 0; i < eventsAmount; i++) {
-            switch(figure) {
+        for (int i = 0; i < eventsAmount; i++) {
+            switch (figure) {
                 case Rectangle:
                     eventsList.add(new RectangleEvent(
                             scale,
@@ -88,8 +93,8 @@ public class MainController {
     private List<BaseEvent> generateEvents(int fromAmount, int toAmount, int fromScale, int toScale, Figure figure) {
         List<BaseEvent> eventsList = new ArrayList<>();
         int eventsAmount = randomInRange(fromAmount, toAmount);
-        for(int i = 0; i < eventsAmount; i++) {
-            switch(figure) {
+        for (int i = 0; i < eventsAmount; i++) {
+            switch (figure) {
                 case Rectangle:
                     eventsList.add(new RectangleEvent(
                             randomInRange(fromScale, toScale),
@@ -121,13 +126,13 @@ public class MainController {
 
     //generate random value in given range [from;to]
     private int randomInRange(int from, int to) {
-        return (int) (Math.random()*(to-from)+1+from);
+        return (int) (Math.random() * (to - from) + 1 + from);
     }
 
     //clear map
     public void clearEvents() {
         eventList.clear();
-        mapPanel.setEventList(eventList);
+        mainMapPanel.getMapPanel().setEventList(eventList);
         controlsPanel.getAmountStatisticPanel().setStatistics(null);
         controlsPanel.getScaleStatisticPanel().setStatistics(null);
     }
@@ -139,7 +144,7 @@ public class MainController {
     private void calculateAmountStatistics() {
         int[] amountStatistics = new int[3];
         //count events every type
-        for(BaseEvent figure: eventList) {
+        for (BaseEvent figure : eventList) {
             switch (figure.getFigure()) {
                 case Triangle:
                     System.out.println("Triangle added");
@@ -165,21 +170,21 @@ public class MainController {
 
         //count max scale
         int maxScale = 0;
-        for(BaseEvent figure: eventList) {
-            if(figure.getScale() > maxScale) {
+        for (BaseEvent figure : eventList) {
+            if (figure.getScale() > maxScale) {
                 maxScale = figure.getScale();
             }
         }
 
         //calculate 30% 60% form max
-        int classA = (int)Math.round(maxScale*0.3);
-        int classB = (int)Math.round(maxScale*0.6);
+        int classA = (int) Math.round(maxScale * 0.3);
+        int classB = (int) Math.round(maxScale * 0.6);
 
         //find out each class class
-        for(BaseEvent figure: eventList) {
-            if(figure.getScale() <= classA) {
+        for (BaseEvent figure : eventList) {
+            if (figure.getScale() <= classA) {
                 scaleStatistics[0]++;
-            } else if(figure.getScale() > classA && figure.getScale() <= classB) {
+            } else if (figure.getScale() > classA && figure.getScale() <= classB) {
                 scaleStatistics[1]++;
             } else {
                 scaleStatistics[2]++;
@@ -187,5 +192,61 @@ public class MainController {
         }
         //draw
         controlsPanel.getScaleStatisticPanel().setStatistics(scaleStatistics);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (mainMapPanel.getDjikstraPanel().isEnabled()) {
+            BaseEvent baseEvent = null;
+            switch (mainMapPanel.getDjikstraPanel().getRadioButtonGroup().getSelection().getActionCommand()) {
+                case "Triangle":
+                    baseEvent = new TriangleEvent(
+                            30,
+                            randomInRange(0, Dimensions.MAP_WIDTH),
+                            randomInRange(0, Dimensions.MAP_HEIGHT),
+                            Figure.Triangle
+                    );
+                    break;
+                case "Circle":
+                    baseEvent = new CircleEvent(
+                            30,
+                            randomInRange(0, Dimensions.MAP_WIDTH),
+                            randomInRange(0, Dimensions.MAP_HEIGHT),
+                            Figure.Circle
+                    );
+                    break;
+                case "Rectangle":
+                    baseEvent = new RectangleEvent(
+                            30,
+                            randomInRange(0, Dimensions.MAP_WIDTH),
+                            randomInRange(0, Dimensions.MAP_HEIGHT),
+                            Figure.Rectangle
+                    );
+                    break;
+            }
+
+            mainMapPanel.getMapPanel().addEventToList(baseEvent);
+
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }
