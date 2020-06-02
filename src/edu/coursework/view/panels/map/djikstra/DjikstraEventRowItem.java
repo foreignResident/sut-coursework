@@ -18,7 +18,8 @@ public class DjikstraEventRowItem extends BasePanel {
         super(layoutManager);
         this.figure = figure;
         JLabel eventNameField = new JLabel(eventName);
-        radioButton = new JRadioButton();
+        radioButton = new JRadioButton("", true);
+
 
         add(eventNameField);
         add(radioButton);

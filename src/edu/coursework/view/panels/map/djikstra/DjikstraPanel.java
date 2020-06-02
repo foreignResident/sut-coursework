@@ -16,6 +16,7 @@ public class DjikstraPanel extends BasePanel {
     private List<DjikstraEventRowItem> eventRowItemList = new ArrayList<>();
     private ButtonGroup radioButtonGroup;
     private Button button;
+    private boolean enabled = false;
 
     public DjikstraPanel(int width, int height, Border border) {
         super(width, height, border, new FlowLayout(FlowLayout.LEFT, 10, 5));
@@ -43,9 +44,16 @@ public class DjikstraPanel extends BasePanel {
         radioButtonGroup.add(thirdRow.getRadioButton());
 
         button = new Button("Add event");
+        button.addActionListener((event) -> changeLabel());
         add(button);
 
 
+
+    }
+
+    private void changeLabel(){
+        enabled = !enabled;
+        title.setText(enabled ? "Select place on map" : "Dijkstra's algorithm");
     }
 
 

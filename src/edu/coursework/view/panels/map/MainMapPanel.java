@@ -11,7 +11,6 @@ import java.awt.*;
 public class MainMapPanel extends BasePanel {
 
     private MapPanel mapPanel;
-
     private DjikstraPanel djikstraPanel;
 
     public MainMapPanel(int width, int height, Border border) {
