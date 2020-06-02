@@ -25,33 +25,36 @@ public class ControlsPanel extends BasePanel {
     private StatisticPanel amountStatisticPanel;
     private StatisticPanel scaleStatisticPanel;
 
-   public ControlsPanel(int width, int height, Border border, MainController controller) {
-       super(width, height, border, new FlowLayout(FlowLayout.CENTER,0,10));
+    public ControlsPanel(int width, int height, Border border, MainController controller) {
+        super(width, height, border, new FlowLayout(FlowLayout.CENTER, 0, 10));
 
-       //border for inner panels
-       Border innerBorder = new LineBorder(new Color(0,0,0),1);
+        //border for inner panels
+        Border innerBorder = new LineBorder(new Color(0, 0, 0), 1);
 
-       //initialize Panels
-       eventsPanel = new EventsPanel(330,120, innerBorder, controller);
-       eventsScalePanel = new EventsScalePanel(330,80, innerBorder);
-       eventsButtonsPanel = new EventsButtonPanel(330,80, innerBorder, controller);
-       amountStatisticPanel = new StatisticPanel(330, 150, innerBorder,
-               new String[]{"Class A", "Class B", "Class C"}, Color.RED, Color.BLACK);
-       scaleStatisticPanel = new StatisticPanel(330, 150, innerBorder,
-               new String[]{"<30%", "30-60%", ">60%"}, Color.BLUE, Color.BLACK);
+        //initialize Panels
+        eventsPanel = new EventsPanel(330, 120, innerBorder, controller);
+        eventsScalePanel = new EventsScalePanel(330, 80, innerBorder);
+        eventsButtonsPanel = new EventsButtonPanel(330, 80, innerBorder, controller);
+        amountStatisticPanel = new StatisticPanel(330, 150, innerBorder,
+                new String[]{"Class A", "Class B", "Class C"}, Color.RED, Color.BLACK);
+        scaleStatisticPanel = new StatisticPanel(330, 150, innerBorder,
+                new String[]{"<30%", "30-60%", ">60%"}, Color.BLUE, Color.BLACK);
 
-       amountStatistic = new JLabel("Statistics by amount");
-       scaleStatistic = new JLabel("Statistics by scale");
 
-       //add child panels
-       add(eventsPanel);
-       add(eventsScalePanel);
-       add(eventsButtonsPanel);
-       add(amountStatistic);
-       add(amountStatisticPanel);
-       add(scaleStatistic);
-       add(scaleStatisticPanel);
-   }
+
+        amountStatistic = new JLabel("Statistics by amount");
+        scaleStatistic = new JLabel("Statistics by scale");
+
+        //add child panels
+        add(eventsPanel);
+        add(eventsScalePanel);
+        add(eventsButtonsPanel);
+        add(amountStatistic);
+        add(amountStatisticPanel);
+        add(scaleStatistic);
+        add(scaleStatisticPanel);
+
+    }
 
     public StatisticPanel getScaleStatisticPanel() {
         return scaleStatisticPanel;

@@ -4,6 +4,7 @@ import edu.coursework.model.*;
 import edu.coursework.utils.Dimensions;
 import edu.coursework.view.panels.controls.ControlsPanel;
 import edu.coursework.view.panels.controls.EventRowItem;
+import edu.coursework.view.panels.map.MainMapPanel;
 import edu.coursework.view.panels.map.MapPanel;
 
 import java.util.ArrayList;
@@ -11,12 +12,14 @@ import java.util.List;
 
 public class MainController {
 
-    private MapPanel mapPanel;
+  //  private MapPanel mapPanel;
+    private MainMapPanel mainMapPanel;
     private ControlsPanel controlsPanel;
     private List<BaseEvent> eventList = new ArrayList<>();
 
-    public void attachViews(MapPanel mapPanel, ControlsPanel controlsPanel) {
-        this.mapPanel = mapPanel;
+    public void attachViews(MainMapPanel mainMapPanel, ControlsPanel controlsPanel) {
+        //this.mapPanel = mapPanel;
+        this.mainMapPanel = mainMapPanel;
         this.controlsPanel = controlsPanel;
     }
 
@@ -43,7 +46,7 @@ public class MainController {
                         eventRowItem.getFigure()));
             }
         }
-        mapPanel.setEventList(eventList);
+        mainMapPanel.getMapPanel().setEventList(eventList);
         calculateAmountStatistics();
         calculateScaleStatistics();
     }
@@ -127,7 +130,7 @@ public class MainController {
     //clear map
     public void clearEvents() {
         eventList.clear();
-        mapPanel.setEventList(eventList);
+        mainMapPanel.getMapPanel().setEventList(eventList);
         controlsPanel.getAmountStatisticPanel().setStatistics(null);
         controlsPanel.getScaleStatisticPanel().setStatistics(null);
     }
