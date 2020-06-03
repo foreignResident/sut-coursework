@@ -206,7 +206,7 @@ public class MainController implements MouseListener {
                             djikstraPanel.getScale(),
                             (int) point.getX(),
                             (int) point.getY(),
-                            Figure.Triangle
+                            Figure.Djikstra
                     );
                     break;
                 case "Circle":
@@ -214,7 +214,7 @@ public class MainController implements MouseListener {
                             djikstraPanel.getScale(),
                             (int) point.getX(),
                             (int) point.getY(),
-                            Figure.Circle
+                            Figure.Djikstra
                     );
                     break;
                 case "Rectangle":
@@ -222,7 +222,7 @@ public class MainController implements MouseListener {
                             djikstraPanel.getScale(),
                             (int) point.getX(),
                             (int) point.getY(),
-                            Figure.Rectangle
+                            Figure.Djikstra
                     );
                     break;
             }
