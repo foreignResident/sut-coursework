@@ -8,18 +8,25 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MapPanel extends BasePanel implements MouseListener {
 
     private List<BaseEvent> eventList = new ArrayList<>();
+    private List<Line2D> lines = new ArrayList<>();
     private Image image;
 
     public MapPanel(int width, int height, Border border) {
         super(width, height, border, new FlowLayout());
         this.image = new ImageIcon("src/img/part_of_map_of_UA.png").getImage();
         addMouseListener(this);
+    }
+
+
+    public void addLine(Line2D line2D){
+        this.lines.add(line2D);
     }
 
     //set eventList and draw events from them
@@ -68,6 +75,14 @@ public class MapPanel extends BasePanel implements MouseListener {
 
         if (eventList != null) {
             eventList.forEach(event -> event.draw(g));
+        }
+
+        Graphics2D g2 = (Graphics2D)g;
+        g2.setStroke(new BasicStroke(2));
+        g2.setColor(Color.YELLOW);
+        for (Line2D line : lines) {
+
+            g2.draw(line);
         }
 
     }

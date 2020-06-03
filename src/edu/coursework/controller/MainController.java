@@ -11,8 +11,10 @@ import edu.coursework.view.panels.map.djikstra.DjikstraPanel;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainController implements MouseListener {
 
@@ -229,9 +231,9 @@ public class MainController implements MouseListener {
                     break;
             }
 
-            createNode(baseEvent);
 
             mainMapPanel.getMapPanel().addEventToList(baseEvent);
+            createNode(baseEvent);
 
         }
     }
@@ -241,20 +243,32 @@ public class MainController implements MouseListener {
         //add destinations
 
         int area = baseEvent.getScale() * 3;
-        List<BaseEvent> eventsInArea = new ArrayList<>();
 
-        System.out.println("X" + baseEvent.getPositionX() + "Y " + baseEvent.getPositionY() + " AREA " + area);
         int firstX = baseEvent.getPositionX() - area;
         int secondX = baseEvent.getPositionX() + area;
 
         int firstY = baseEvent.getPositionY() - area;
         int secondY = baseEvent.getPositionY() + area;
 
-        System.out.println("X1 " + firstX + " X2 " + secondX + " Y1 " + firstY + " Y2 " + secondY);
-        System.out.println();
+        System.out.println("x! " + firstX + " x2 " + secondX + " y1 " + firstY + " y2 " + secondY);
+
+        List<BaseEvent> eventsInArea = eventList.stream()
+                .filter(temp -> temp.getPositionX() >= firstX && temp.getPositionX() <= secondX)
+                .filter(temp -> temp.getPositionY() >= firstY && temp.getPositionY() <= secondY)
+                .collect(Collectors.toList());
+
+        eventsInArea.forEach(temp -> System.out.println(temp.getFigure() + " " + temp.getPositionY() + " " + temp.getPositionX()));
+
+        for (BaseEvent temp : eventsInArea) {
+            mainMapPanel.getMapPanel().addLine(
+                    new Line2D.Double(baseEvent.getPositionX(), baseEvent.getPositionY(), temp.getPositionX(), temp.getPositionY())
+            );
+        }
+        mainMapPanel.getMapPanel().repaint();
 
         System.out.println(node.toString());
     }
+
 
     @Override
     public void mousePressed(MouseEvent e) {
