@@ -1,6 +1,7 @@
 package edu.coursework.controller;
 
 import edu.coursework.model.*;
+import edu.coursework.model.djikstra.Node;
 import edu.coursework.utils.Dimensions;
 import edu.coursework.view.panels.controls.ControlsPanel;
 import edu.coursework.view.panels.controls.EventRowItem;
@@ -224,12 +225,35 @@ public class MainController implements MouseListener {
                             (int) point.getY(),
                             Figure.Djikstra
                     );
+
                     break;
             }
+
+            createNode(baseEvent);
 
             mainMapPanel.getMapPanel().addEventToList(baseEvent);
 
         }
+    }
+
+    private void createNode(BaseEvent baseEvent) {
+        Node node = new Node(baseEvent.getFigure() + " " + baseEvent.getPositionX() + " " + baseEvent.getPositionY());
+        //add destinations
+
+        int area = baseEvent.getScale() * 3;
+        List<BaseEvent> eventsInArea = new ArrayList<>();
+
+        System.out.println("X" + baseEvent.getPositionX() + "Y " + baseEvent.getPositionY() + " AREA " + area);
+        int firstX = baseEvent.getPositionX() - area;
+        int secondX = baseEvent.getPositionX() + area;
+
+        int firstY = baseEvent.getPositionY() - area;
+        int secondY = baseEvent.getPositionY() + area;
+
+        System.out.println("X1 " + firstX + " X2 " + secondX + " Y1 " + firstY + " Y2 " + secondY);
+        System.out.println();
+
+        System.out.println(node.toString());
     }
 
     @Override
