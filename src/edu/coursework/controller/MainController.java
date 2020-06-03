@@ -1,6 +1,7 @@
 package edu.coursework.controller;
 
 import edu.coursework.model.*;
+import edu.coursework.model.djikstra.Graph;
 import edu.coursework.model.djikstra.Node;
 import edu.coursework.utils.Dimensions;
 import edu.coursework.view.panels.controls.ControlsPanel;
@@ -239,23 +240,10 @@ public class MainController implements MouseListener {
     }
 
     private void createNode(BaseEvent baseEvent) {
-        Node node = new Node(baseEvent.getFigure() + " " + baseEvent.getPositionX() + " " + baseEvent.getPositionY());
-        //add destinations
+        Node mainNode = new Node(baseEvent.getFigure() + " " + baseEvent.getPositionX() + " " + baseEvent.getPositionY());
 
-        int area = baseEvent.getScale() * 3;
-
-        int firstX = baseEvent.getPositionX() - area;
-        int secondX = baseEvent.getPositionX() + area;
-
-        int firstY = baseEvent.getPositionY() - area;
-        int secondY = baseEvent.getPositionY() + area;
-
-        System.out.println("x! " + firstX + " x2 " + secondX + " y1 " + firstY + " y2 " + secondY);
-
-        List<BaseEvent> eventsInArea = eventList.stream()
-                .filter(temp -> temp.getPositionX() >= firstX && temp.getPositionX() <= secondX)
-                .filter(temp -> temp.getPositionY() >= firstY && temp.getPositionY() <= secondY)
-                .collect(Collectors.toList());
+        //find the nearest destinations
+        List<BaseEvent> eventsInArea = findNearestEvents(baseEvent);
 
         eventsInArea.forEach(temp -> System.out.println(temp.getFigure() + " " + temp.getPositionY() + " " + temp.getPositionX()));
 
@@ -264,9 +252,47 @@ public class MainController implements MouseListener {
                     new Line2D.Double(baseEvent.getPositionX(), baseEvent.getPositionY(), temp.getPositionX(), temp.getPositionY())
             );
         }
-        mainMapPanel.getMapPanel().repaint();
 
-        System.out.println(node.toString());
+        Graph graph = new Graph();
+        graph.addNode(mainNode);
+        //add destinations
+        for (BaseEvent temp : eventsInArea) {
+            Node node = new Node(temp.getFigure() + " " + temp.getPositionX() + " " + temp.getPositionY());
+            int distance = countDestination(baseEvent.getPositionX(), baseEvent.getPositionY(),
+                    temp.getPositionX(), temp.getPositionY());
+            mainNode.addDestination(node, distance);
+            graph.addNode(node);
+            System.out.println(node.getName() + " " + distance);
+        }
+
+        graph = graph.calculateShortestPathFromSource(graph, mainNode);
+
+        System.out.println(graph.toString());
+
+        mainMapPanel.getMapPanel().repaint();
+    }
+
+    private List<BaseEvent> findNearestEvents(BaseEvent mainEvent) {
+        int area = mainEvent.getScale() * 3;
+
+        int firstX = mainEvent.getPositionX() - area;
+        int secondX = mainEvent.getPositionX() + area;
+
+        int firstY = mainEvent.getPositionY() - area;
+        int secondY = mainEvent.getPositionY() + area;
+
+        System.out.println("x! " + firstX + " x2 " + secondX + " y1 " + firstY + " y2 " + secondY);
+
+        return eventList.stream()
+                .filter(temp -> temp.getPositionX() >= firstX && temp.getPositionX() <= secondX)
+                .filter(temp -> temp.getPositionY() >= firstY && temp.getPositionY() <= secondY)
+                .collect(Collectors.toList());
+    }
+
+    private int countDestination(int x1, int y1, int x2, int y2) {
+        int x = (int) (Math.pow(x2 - x1, 2));
+        int y = (int) (Math.pow(y2 - y1, 2));
+        return (int) Math.sqrt(x + y);
     }
 
 

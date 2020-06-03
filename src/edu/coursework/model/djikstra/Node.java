@@ -23,4 +23,35 @@ public class Node {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public List<Node> getShortestPath() {
+        return shortestPath;
+    }
+
+    public Integer getDistance() {
+        return distance;
+    }
+
+    public Map<Node, Integer> getAdjacentNodes() {
+        return adjacentNodes;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setShortestPath(List<Node> shortestPath) {
+        this.shortestPath = shortestPath;
+    }
+
+    public void setDistance(Integer distance) {
+        this.distance = distance;
+    }
+
+    public void setAdjacentNodes(Map<Node, Integer> adjacentNodes) {
+        this.adjacentNodes = adjacentNodes;
+    }
 }

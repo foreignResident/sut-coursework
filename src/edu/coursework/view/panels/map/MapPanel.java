@@ -25,7 +25,7 @@ public class MapPanel extends BasePanel implements MouseListener {
     }
 
 
-    public void addLine(Line2D line2D){
+    public void addLine(Line2D line2D) {
         this.lines.add(line2D);
     }
 
@@ -35,7 +35,7 @@ public class MapPanel extends BasePanel implements MouseListener {
         repaint();
     }
 
-    public void addEventToList(BaseEvent event){
+    public void addEventToList(BaseEvent event) {
         this.eventList.add(event);
         repaint();
     }
@@ -77,13 +77,10 @@ public class MapPanel extends BasePanel implements MouseListener {
             eventList.forEach(event -> event.draw(g));
         }
 
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(2));
         g2.setColor(Color.YELLOW);
-        for (Line2D line : lines) {
-
-            g2.draw(line);
-        }
+        lines.forEach(g2::draw);
 
     }
 
