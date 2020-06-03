@@ -1,5 +1,6 @@
 package edu.coursework.view.panels.map;
 
+import edu.coursework.model.BaseEvent;
 import edu.coursework.utils.Dimensions;
 import edu.coursework.view.panels.BasePanel;
 import edu.coursework.view.panels.map.djikstra.DjikstraPanel;
@@ -7,11 +8,15 @@ import edu.coursework.view.panels.map.djikstra.DjikstraPanel;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.geom.Line2D;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainMapPanel extends BasePanel {
 
     private MapPanel mapPanel;
     private DjikstraPanel djikstraPanel;
+
 
     public MainMapPanel(int width, int height, Border border) {
         super(width, height, border, new FlowLayout(FlowLayout.CENTER, 0, 10));
@@ -30,6 +35,8 @@ public class MainMapPanel extends BasePanel {
 
 
     }
+
+
 
     public MapPanel getMapPanel() {
         return mapPanel;

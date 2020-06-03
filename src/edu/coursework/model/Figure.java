@@ -5,7 +5,8 @@ import java.awt.*;
 public enum Figure {
     Rectangle(Color.BLUE),
     Triangle(Color.RED),
-    Circle(Color.ORANGE);
+    Circle(Color.ORANGE),
+    Djikstra(Color.GREEN);
 
     private Color color;
 

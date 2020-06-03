@@ -1,6 +1,7 @@
 package edu.coursework.controller;
 
 import edu.coursework.model.*;
+import edu.coursework.model.djikstra.Node;
 import edu.coursework.utils.Dimensions;
 import edu.coursework.view.panels.controls.ControlsPanel;
 import edu.coursework.view.panels.controls.EventRowItem;
@@ -10,8 +11,10 @@ import edu.coursework.view.panels.map.djikstra.DjikstraPanel;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainController implements MouseListener {
 
@@ -206,7 +209,7 @@ public class MainController implements MouseListener {
                             djikstraPanel.getScale(),
                             (int) point.getX(),
                             (int) point.getY(),
-                            Figure.Triangle
+                            Figure.Djikstra
                     );
                     break;
                 case "Circle":
@@ -214,7 +217,7 @@ public class MainController implements MouseListener {
                             djikstraPanel.getScale(),
                             (int) point.getX(),
                             (int) point.getY(),
-                            Figure.Circle
+                            Figure.Djikstra
                     );
                     break;
                 case "Rectangle":
@@ -222,15 +225,50 @@ public class MainController implements MouseListener {
                             djikstraPanel.getScale(),
                             (int) point.getX(),
                             (int) point.getY(),
-                            Figure.Rectangle
+                            Figure.Djikstra
                     );
+
                     break;
             }
 
+
             mainMapPanel.getMapPanel().addEventToList(baseEvent);
+            createNode(baseEvent);
 
         }
     }
+
+    private void createNode(BaseEvent baseEvent) {
+        Node node = new Node(baseEvent.getFigure() + " " + baseEvent.getPositionX() + " " + baseEvent.getPositionY());
+        //add destinations
+
+        int area = baseEvent.getScale() * 3;
+
+        int firstX = baseEvent.getPositionX() - area;
+        int secondX = baseEvent.getPositionX() + area;
+
+        int firstY = baseEvent.getPositionY() - area;
+        int secondY = baseEvent.getPositionY() + area;
+
+        System.out.println("x! " + firstX + " x2 " + secondX + " y1 " + firstY + " y2 " + secondY);
+
+        List<BaseEvent> eventsInArea = eventList.stream()
+                .filter(temp -> temp.getPositionX() >= firstX && temp.getPositionX() <= secondX)
+                .filter(temp -> temp.getPositionY() >= firstY && temp.getPositionY() <= secondY)
+                .collect(Collectors.toList());
+
+        eventsInArea.forEach(temp -> System.out.println(temp.getFigure() + " " + temp.getPositionY() + " " + temp.getPositionX()));
+
+        for (BaseEvent temp : eventsInArea) {
+            mainMapPanel.getMapPanel().addLine(
+                    new Line2D.Double(baseEvent.getPositionX(), baseEvent.getPositionY(), temp.getPositionX(), temp.getPositionY())
+            );
+        }
+        mainMapPanel.getMapPanel().repaint();
+
+        System.out.println(node.toString());
+    }
+
 
     @Override
     public void mousePressed(MouseEvent e) {
