@@ -11,10 +11,10 @@ import java.util.PriorityQueue;
 
 public class DjikstraConfigurator {
 
-    private BaseEvent firstEvent;
-    private BaseEvent secondEvent;
+    private Vertex firstVertex;
+    private Vertex secondVertex;
 
-    public static void computePaths(Vertex source) {
+    public void computePaths(Vertex source) {
         source.setMinDistance(0.);
         PriorityQueue<Vertex> vertexQueue = new PriorityQueue<>();
         vertexQueue.add(source);
@@ -38,7 +38,7 @@ public class DjikstraConfigurator {
         }
     }
 
-    public static List<Vertex> getShortestPathTo(Vertex target) {
+    public List<Vertex> getShortestPathTo(Vertex target) {
         List<Vertex> path = new ArrayList<>();
         for (Vertex vertex = target; vertex != null; vertex = vertex.getPrevious())
             path.add(vertex);
@@ -47,4 +47,25 @@ public class DjikstraConfigurator {
         return path;
     }
 
+    public boolean isFull() {
+        boolean filled = firstVertex != null;
+        boolean filled2 = secondVertex != null;
+        return filled && filled2;
+    }
+
+    public Vertex getFirstVertex() {
+        return firstVertex;
+    }
+
+    public void setFirstVertex(Vertex firstVertex) {
+        this.firstVertex = firstVertex;
+    }
+
+    public Vertex getSecondVertex() {
+        return secondVertex;
+    }
+
+    public void setSecondVertex(Vertex secondVertex) {
+        this.secondVertex = secondVertex;
+    }
 }

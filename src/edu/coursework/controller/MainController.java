@@ -26,6 +26,7 @@ public class MainController implements MouseListener {
 
     private static int count = 0;
     private DjikstraConfigurator djikstraConfigurator;
+    private List<Vertex> vertexList = new ArrayList<>();
 
     public void attachViews(MainMapPanel mainMapPanel, ControlsPanel controlsPanel) {
         this.mainMapPanel = mainMapPanel;
@@ -67,32 +68,37 @@ public class MainController implements MouseListener {
         int eventsAmount = randomInRange(fromAmount, toAmount);
         //create events in following amount
         for (int i = 0; i < eventsAmount; i++) {
+            BaseEvent baseEvent = null;
             switch (figure) {
                 case Rectangle:
-                    eventsList.add(new RectangleEvent(
+                    baseEvent = new RectangleEvent(
                             scale,
                             randomInRange(0, Dimensions.MAP_WIDTH),
                             randomInRange(0, Dimensions.MAP_HEIGHT),
                             figure
-                    ));
+                    );
+
                     break;
                 case Triangle:
-                    eventsList.add(new TriangleEvent(
+                    baseEvent = new TriangleEvent(
                             scale,
                             randomInRange(0, Dimensions.MAP_WIDTH),
                             randomInRange(0, Dimensions.MAP_HEIGHT),
                             figure
-                    ));
+                    );
                     break;
                 case Circle:
-                    eventsList.add(new CircleEvent(
+                    baseEvent = new CircleEvent(
                             scale,
                             randomInRange(0, Dimensions.MAP_WIDTH),
                             randomInRange(0, Dimensions.MAP_HEIGHT),
                             figure
-                    ));
+                    );
                     break;
             }
+
+            eventsList.add(baseEvent);
+            createVertex(baseEvent);
         }
         return eventsList;
     }
@@ -210,6 +216,11 @@ public class MainController implements MouseListener {
             Point point = e.getPoint();
             BaseEvent baseEvent = null;
             DjikstraPanel djikstraPanel = mainMapPanel.getDjikstraPanel();
+
+            if (djikstraConfigurator == null) {
+                djikstraConfigurator = new DjikstraConfigurator();
+            }
+
             switch (djikstraPanel.getActionCommand()) {
                 case "Triangle":
                     baseEvent = new TriangleEvent(
@@ -240,58 +251,90 @@ public class MainController implements MouseListener {
 
 
             mainMapPanel.getMapPanel().addEventToList(baseEvent);
-            //createNode(baseEvent);
 
-            createVertex(baseEvent);
+            findNearestWay();
 
+            Vertex createdVertex = createVertex(baseEvent);
+            if (djikstraConfigurator.getFirstVertex() == null) {
+                djikstraConfigurator.setFirstVertex(createdVertex);
+            } else if (djikstraConfigurator.getSecondVertex() == null) {
+                djikstraConfigurator.setSecondVertex(createdVertex);
+            }
+
+
+            findNearestWay();
         }
     }
 
-    private void createVertex(BaseEvent baseEvent) {
+    private void findNearestWay() {
+        if (djikstraConfigurator.isFull()) {
+            System.out.println("FIRST " + djikstraConfigurator.getFirstVertex() + " SECOND " + djikstraConfigurator.getSecondVertex());
+            djikstraConfigurator.computePaths(djikstraConfigurator.getFirstVertex());
+            List<Vertex> path = djikstraConfigurator.getShortestPathTo(djikstraConfigurator.getSecondVertex());
+
+
+            //draw path line
+
+            try {
+                for (int i = 0; i < path.size(); i++) {
+                    BaseEvent first = path.get(i).getEvent();
+                    BaseEvent second = path.get(i + 1).getEvent();
+
+                    mainMapPanel.getMapPanel().addLine(
+                            new Line2D.Double(
+                                    first.getPositionX(), first.getPositionY(), second.getPositionX(), second.getPositionY()
+                            )
+                    );
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            mainMapPanel.getMapPanel().repaint();
+
+            System.out.println("PATH " + path);
+            djikstraConfigurator = null;
+        }
+    }
+
+    private Vertex createVertex(BaseEvent baseEvent) {
         Vertex vertex = new Vertex(baseEvent.getFigure() + " " + baseEvent.getPositionX() + " " + baseEvent.getPositionY() + " " + count, baseEvent);
         count++;
+        vertexList.add(vertex);
+
         List<BaseEvent> eventsInArea = findNearestEvents(baseEvent);
         eventsInArea.forEach(temp -> System.out.println(temp.getFigure() + " " + temp.getPositionY() + " " + temp.getPositionX()));
 
-        //add destinations
-
         findDestination(vertex, baseEvent, eventsInArea);
+
         //mainMapPanel.getMapPanel().repaint();
+        return vertex;
     }
 
 
     private void findDestination(Vertex mainVertex, BaseEvent baseEvent, List<BaseEvent> eventsInArea) {
         for (BaseEvent temp : eventsInArea) {
-            Vertex vertex = new Vertex(temp.getFigure() + " " + temp.getPositionX() + " " + temp.getPositionY() + " " + count, temp);
+            Vertex vertex = vertexList.stream()
+                    .filter(o -> o.getEvent() == temp)
+                    .findFirst().orElse(null);
+
+            if (vertex == null) {
+                vertex = new Vertex(temp.getFigure() + " " + temp.getPositionX() + " " + temp.getPositionY() + " " + count, temp);
+            }
+
             int distance = countDestination(baseEvent.getPositionX(), baseEvent.getPositionY(),
                     temp.getPositionX(), temp.getPositionY());
-
-            System.out.println("INSIDE OF FIND DESTINATION");
 
             mainVertex.addDestination(new Edge(vertex, distance));
             vertex.addDestination(new Edge(mainVertex, distance));
 
-            //add line
+            /*//add line
             mainMapPanel.getMapPanel().addLine(
                     new Line2D.Double(baseEvent.getPositionX(), baseEvent.getPositionY(), temp.getPositionX(), temp.getPositionY())
             );
 
             mainMapPanel.getMapPanel().repaint();
-
-            List<BaseEvent> nearestEvents = findNearestEvents(temp);
-            if (nearestEvents != null && nearestEvents.size() > 0) {
-                List<BaseEvent> newNewTest = new ArrayList<>();
-                for (BaseEvent nearestEvent : nearestEvents) {
-                    for (Edge edge : vertex.getDestinations()) {
-                        if (!nearestEvents.contains(edge.getTarget().getEvent())) {
-                            newNewTest.add(nearestEvent);
-                        }
-                    }
-
-
-                }
-                findDestination(vertex, temp, newNewTest);
-            }
+            */
 
             count++;
         }
@@ -307,10 +350,12 @@ public class MainController implements MouseListener {
         int firstY = mainEvent.getPositionY() - area;
         int secondY = mainEvent.getPositionY() + area;
 
-        return eventList.stream()
+        List<BaseEvent> nearestEvents = eventList.stream()
                 .filter(temp -> temp.getPositionX() >= firstX && temp.getPositionX() <= secondX)
                 .filter(temp -> temp.getPositionY() >= firstY && temp.getPositionY() <= secondY)
                 .collect(Collectors.toList());
+        if (nearestEvents.contains(mainEvent)) nearestEvents.remove(mainEvent);
+        return nearestEvents;
     }
 
     private int countDestination(int x1, int y1, int x2, int y2) {
