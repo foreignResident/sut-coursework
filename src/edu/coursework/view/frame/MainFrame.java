@@ -21,7 +21,7 @@ public class MainFrame extends JFrame {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setTitle("Coursework project, version 1.0.0, (c) By Vilkhovyk Aleksandr");
+        setTitle("Coursework project, version 1.0.0, (c) By Vilkhovyk Aleksandr and Shypilova Anna");
         setLayout(new FlowLayout());
         //create black border with blue color
         Border border = new LineBorder(Color.BLUE, 1);
@@ -30,7 +30,7 @@ public class MainFrame extends JFrame {
         controller = new MainController();
 
         controlsPanel = new ControlsPanel(350, 700, border, controller);
-        mainMapPanel = new MainMapPanel(700, 750, border);
+        mainMapPanel = new MainMapPanel(700, 716, border);
 
         controller.attachViews(mainMapPanel, controlsPanel);
         add(mainMapPanel);

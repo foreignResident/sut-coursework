@@ -26,7 +26,7 @@ public class MainMapPanel extends BasePanel {
 
         //initialize Panels
         mapPanel = new MapPanel(Dimensions.MAP_WIDTH, 650, border);
-        djikstraPanel = new DjikstraPanel(700, 100, border);
+        djikstraPanel = new DjikstraPanel(700, 45, border);
 
         //add child panels
 
