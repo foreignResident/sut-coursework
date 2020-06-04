@@ -1,14 +1,18 @@
 package edu.coursework.model.djikstra;
 
+import edu.coursework.model.BaseEvent;
+
 public class Vertex implements Comparable<Vertex> {
 
     private String name;
     private Edge[] adjacencies;
     private double minDistance = Double.POSITIVE_INFINITY;
     private Vertex previous;
+    private BaseEvent event;
 
-    public Vertex(String argName) {
-        name = argName;
+    public Vertex(String name, BaseEvent event) {
+        this.name = name;
+        this.event = event;
     }
 
     public String toString() {
@@ -49,5 +53,13 @@ public class Vertex implements Comparable<Vertex> {
 
     public void setPrevious(Vertex previous) {
         this.previous = previous;
+    }
+
+    public BaseEvent getEvent() {
+        return event;
+    }
+
+    public void setEvent(BaseEvent event) {
+        this.event = event;
     }
 }

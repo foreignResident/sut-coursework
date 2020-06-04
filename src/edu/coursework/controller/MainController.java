@@ -1,6 +1,7 @@
 package edu.coursework.controller;
 
 import edu.coursework.model.*;
+import edu.coursework.model.djikstra.Vertex;
 import edu.coursework.utils.Dimensions;
 import edu.coursework.view.panels.controls.ControlsPanel;
 import edu.coursework.view.panels.controls.EventRowItem;
@@ -10,10 +11,8 @@ import edu.coursework.view.panels.map.djikstra.DjikstraPanel;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MainController implements MouseListener {
@@ -237,18 +236,26 @@ public class MainController implements MouseListener {
 
 
             mainMapPanel.getMapPanel().addEventToList(baseEvent);
-            createNode(baseEvent);
+            //createNode(baseEvent);
+
+            createVertex(baseEvent);
 
         }
     }
 
-    private void createNode(BaseEvent baseEvent) {
-        Node mainNode = new Node(baseEvent.getFigure() + " " + baseEvent.getPositionX() + " " + baseEvent.getPositionY() + " " + count, baseEvent);
+    private void createVertex(BaseEvent baseEvent) {
+        Vertex vertex = new Vertex(baseEvent.getFigure() + " " + baseEvent.getPositionX() + " " + baseEvent.getPositionY() + " " + count, baseEvent);
         count++;
-        //find the nearest destinations
         List<BaseEvent> eventsInArea = findNearestEvents(baseEvent);
-
         eventsInArea.forEach(temp -> System.out.println(temp.getFigure() + " " + temp.getPositionY() + " " + temp.getPositionX()));
+
+        //add destinations
+
+
+
+    }
+
+   /* private void createNode(BaseEvent baseEvent) {
 
 
         Graph graph = new Graph();
@@ -275,9 +282,9 @@ public class MainController implements MouseListener {
 
 
         mainMapPanel.getMapPanel().repaint();
-    }
+    }*/
 
-    private Graph findDestination(Node mainNode, BaseEvent baseEvent, List<BaseEvent> eventsInArea, Graph graph) {
+    /*private Graph findDestination(Node mainNode, BaseEvent baseEvent, List<BaseEvent> eventsInArea, Graph graph) {
         for (BaseEvent temp : eventsInArea) {
             Node node = new Node(temp.getFigure() + " " + temp.getPositionX() + " " + temp.getPositionY() + " " + count, temp);
             int distance = countDestination(baseEvent.getPositionX(), baseEvent.getPositionY(),
@@ -311,7 +318,7 @@ public class MainController implements MouseListener {
         }
 
         return graph;
-    }
+    }*/
 
     private List<BaseEvent> findNearestEvents(BaseEvent mainEvent) {
         int area = mainEvent.getScale() * 3;
