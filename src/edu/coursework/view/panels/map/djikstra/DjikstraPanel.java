@@ -1,9 +1,7 @@
 package edu.coursework.view.panels.map.djikstra;
 
-import edu.coursework.model.BaseEvent;
 import edu.coursework.model.Figure;
 import edu.coursework.view.panels.BasePanel;
-import edu.coursework.view.panels.controls.EventRowItem;
 
 import javax.swing.*;
 import javax.swing.border.Border;

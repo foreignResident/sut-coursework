@@ -1,6 +1,5 @@
 package edu.coursework.view.panels.map.djikstra;
 
-import edu.coursework.model.BaseEvent;
 import edu.coursework.model.djikstra.Edge;
 import edu.coursework.model.djikstra.Vertex;
 

@@ -272,9 +272,6 @@ public class MainController implements MouseListener {
             djikstraConfigurator.computePaths(djikstraConfigurator.getFirstVertex());
             List<Vertex> path = djikstraConfigurator.getShortestPathTo(djikstraConfigurator.getSecondVertex());
 
-
-            //draw path line
-
             try {
                 for (int i = 0; i < path.size(); i++) {
                     BaseEvent first = path.get(i).getEvent();
@@ -292,7 +289,7 @@ public class MainController implements MouseListener {
 
             mainMapPanel.getMapPanel().repaint();
 
-            System.out.println("PATH " + path);
+
             djikstraConfigurator = null;
         }
     }
@@ -307,7 +304,6 @@ public class MainController implements MouseListener {
 
         findDestination(vertex, baseEvent, eventsInArea);
 
-        //mainMapPanel.getMapPanel().repaint();
         return vertex;
     }
 
@@ -328,13 +324,6 @@ public class MainController implements MouseListener {
             mainVertex.addDestination(new Edge(vertex, distance));
             vertex.addDestination(new Edge(mainVertex, distance));
 
-            /*//add line
-            mainMapPanel.getMapPanel().addLine(
-                    new Line2D.Double(baseEvent.getPositionX(), baseEvent.getPositionY(), temp.getPositionX(), temp.getPositionY())
-            );
-
-            mainMapPanel.getMapPanel().repaint();
-            */
 
             count++;
         }
