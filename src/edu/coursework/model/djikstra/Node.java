@@ -1,5 +1,7 @@
 package edu.coursework.model.djikstra;
 
+import edu.coursework.model.BaseEvent;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,14 +15,17 @@ public class Node {
 
     private Integer distance = Integer.MAX_VALUE;
 
+    private BaseEvent nodeEvent;
+
     Map<Node, Integer> adjacentNodes = new HashMap<>();
 
     public void addDestination(Node destination, int distance) {
         adjacentNodes.put(destination, distance);
     }
 
-    public Node(String name) {
+    public Node(String name, BaseEvent nodeEvent) {
         this.name = name;
+        this.nodeEvent = nodeEvent;
     }
 
     public String getName() {
@@ -53,5 +58,13 @@ public class Node {
 
     public void setAdjacentNodes(Map<Node, Integer> adjacentNodes) {
         this.adjacentNodes = adjacentNodes;
+    }
+
+    public BaseEvent getNodeEvent() {
+        return nodeEvent;
+    }
+
+    public void setNodeEvent(BaseEvent nodeEvent) {
+        this.nodeEvent = nodeEvent;
     }
 }

@@ -15,6 +15,7 @@ import java.awt.event.MouseListener;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MainController implements MouseListener {
@@ -22,6 +23,8 @@ public class MainController implements MouseListener {
     private MainMapPanel mainMapPanel;
     private ControlsPanel controlsPanel;
     private List<BaseEvent> eventList = new ArrayList<>();
+
+    private static int count = 0;
 
     public void attachViews(MainMapPanel mainMapPanel, ControlsPanel controlsPanel) {
         this.mainMapPanel = mainMapPanel;
@@ -137,6 +140,8 @@ public class MainController implements MouseListener {
     public void clearEvents() {
         eventList.clear();
         mainMapPanel.getMapPanel().setEventList(eventList);
+        mainMapPanel.getMapPanel().setLines(new ArrayList<>());
+        mainMapPanel.getMapPanel().repaint();
         controlsPanel.getAmountStatisticPanel().setStatistics(null);
         controlsPanel.getScaleStatisticPanel().setStatistics(null);
     }
@@ -240,36 +245,74 @@ public class MainController implements MouseListener {
     }
 
     private void createNode(BaseEvent baseEvent) {
-        Node mainNode = new Node(baseEvent.getFigure() + " " + baseEvent.getPositionX() + " " + baseEvent.getPositionY());
-
+        Node mainNode = new Node(baseEvent.getFigure() + " " + baseEvent.getPositionX() + " " + baseEvent.getPositionY() + " " + count, baseEvent);
+        count++;
         //find the nearest destinations
         List<BaseEvent> eventsInArea = findNearestEvents(baseEvent);
 
         eventsInArea.forEach(temp -> System.out.println(temp.getFigure() + " " + temp.getPositionY() + " " + temp.getPositionX()));
 
-        for (BaseEvent temp : eventsInArea) {
-            mainMapPanel.getMapPanel().addLine(
-                    new Line2D.Double(baseEvent.getPositionX(), baseEvent.getPositionY(), temp.getPositionX(), temp.getPositionY())
-            );
-        }
 
         Graph graph = new Graph();
         graph.addNode(mainNode);
         //add destinations
-        for (BaseEvent temp : eventsInArea) {
-            Node node = new Node(temp.getFigure() + " " + temp.getPositionX() + " " + temp.getPositionY());
-            int distance = countDestination(baseEvent.getPositionX(), baseEvent.getPositionY(),
-                    temp.getPositionX(), temp.getPositionY());
-            mainNode.addDestination(node, distance);
-            graph.addNode(node);
-            System.out.println(node.getName() + " " + distance);
-        }
+
+        graph = findDestination(mainNode, baseEvent, eventsInArea, graph);
 
         graph = graph.calculateShortestPathFromSource(graph, mainNode);
+        for (Node temp : graph.getNodes()) {
+            for (Map.Entry<Node, Integer> entry : temp.getAdjacentNodes().entrySet()) {
+                System.out.println("NODE DETECT " + entry.getKey().getName() + " " + entry.getValue());
+            }
+        }
 
-        System.out.println(graph.toString());
+        mainNode.getAdjacentNodes().forEach(
+                (node, integer) -> System.out.println("MAIN NODE " + mainNode.getName() + " " + node.getName() + " and between them distance is " + integer)
+        );
+
+        System.out.println("PATH ");
+        for(Node temp : mainNode.getShortestPath()){
+            System.out.println(temp.getName());
+        }
+
 
         mainMapPanel.getMapPanel().repaint();
+    }
+
+    private Graph findDestination(Node mainNode, BaseEvent baseEvent, List<BaseEvent> eventsInArea, Graph graph) {
+        for (BaseEvent temp : eventsInArea) {
+            Node node = new Node(temp.getFigure() + " " + temp.getPositionX() + " " + temp.getPositionY() + " " + count, temp);
+            int distance = countDestination(baseEvent.getPositionX(), baseEvent.getPositionY(),
+                    temp.getPositionX(), temp.getPositionY());
+
+            mainNode.addDestination(node, distance);
+            node.addDestination(mainNode, distance);
+            graph.addNode(node);
+
+            System.out.println();
+            mainMapPanel.getMapPanel().addLine(
+                    new Line2D.Double(baseEvent.getPositionX(), baseEvent.getPositionY(), temp.getPositionX(), temp.getPositionY())
+            );
+            mainMapPanel.getMapPanel().repaint();
+
+            List<BaseEvent> nearestEvents = findNearestEvents(temp);
+            if (nearestEvents != null && nearestEvents.size() > 0) {
+                List<BaseEvent> newNewTest = new ArrayList<>();
+                for (BaseEvent nearestEvent : nearestEvents) {
+                    for (Map.Entry<Node, Integer> entry : node.getAdjacentNodes().entrySet()) {
+                        if (!nearestEvents.contains(entry.getKey().getNodeEvent())) {
+                            newNewTest.add(nearestEvent);
+                        }
+                    }
+
+                }
+                findDestination(node, temp, newNewTest, graph);
+            }
+
+            count++;
+        }
+
+        return graph;
     }
 
     private List<BaseEvent> findNearestEvents(BaseEvent mainEvent) {
@@ -280,8 +323,6 @@ public class MainController implements MouseListener {
 
         int firstY = mainEvent.getPositionY() - area;
         int secondY = mainEvent.getPositionY() + area;
-
-        System.out.println("x! " + firstX + " x2 " + secondX + " y1 " + firstY + " y2 " + secondY);
 
         return eventList.stream()
                 .filter(temp -> temp.getPositionX() >= firstX && temp.getPositionX() <= secondX)

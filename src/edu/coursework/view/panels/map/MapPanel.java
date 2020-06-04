@@ -108,4 +108,20 @@ public class MapPanel extends BasePanel implements MouseListener {
     public void mouseExited(MouseEvent e) {
 
     }
+
+    public List<Line2D> getLines() {
+        return lines;
+    }
+
+    public void setLines(List<Line2D> lines) {
+        this.lines = lines;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
 }
