@@ -35,6 +35,9 @@ public class Graph {
             }
             settledNodes.add(currentNode);
         }
+
+
+
         return graph;
     }
 
@@ -62,4 +65,11 @@ public class Graph {
         }
     }
 
+    public Set<Node> getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(Set<Node> nodes) {
+        this.nodes = nodes;
+    }
 }
