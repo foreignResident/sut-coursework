@@ -2,10 +2,13 @@ package edu.coursework.model.djikstra;
 
 import edu.coursework.model.BaseEvent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Vertex implements Comparable<Vertex> {
 
     private String name;
-    private Edge[] adjacencies;
+    private List<Edge> destinations = new ArrayList<>();
     private double minDistance = Double.POSITIVE_INFINITY;
     private Vertex previous;
     private BaseEvent event;
@@ -13,6 +16,10 @@ public class Vertex implements Comparable<Vertex> {
     public Vertex(String name, BaseEvent event) {
         this.name = name;
         this.event = event;
+    }
+
+    public void addDestination(Edge edge) {
+        this.destinations.add(edge);
     }
 
     public String toString() {
@@ -31,12 +38,12 @@ public class Vertex implements Comparable<Vertex> {
         this.name = name;
     }
 
-    public Edge[] getAdjacencies() {
-        return adjacencies;
+    public List<Edge> getDestinations() {
+        return destinations;
     }
 
-    public void setAdjacencies(Edge[] adjacencies) {
-        this.adjacencies = adjacencies;
+    public void setDestinations(List<Edge> destinations) {
+        this.destinations = destinations;
     }
 
     public double getMinDistance() {

@@ -1,16 +1,19 @@
 package edu.coursework.controller;
 
 import edu.coursework.model.*;
+import edu.coursework.model.djikstra.Edge;
 import edu.coursework.model.djikstra.Vertex;
 import edu.coursework.utils.Dimensions;
 import edu.coursework.view.panels.controls.ControlsPanel;
 import edu.coursework.view.panels.controls.EventRowItem;
 import edu.coursework.view.panels.map.MainMapPanel;
+import edu.coursework.view.panels.map.djikstra.DjikstraConfigurator;
 import edu.coursework.view.panels.map.djikstra.DjikstraPanel;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +25,7 @@ public class MainController implements MouseListener {
     private List<BaseEvent> eventList = new ArrayList<>();
 
     private static int count = 0;
+    private DjikstraConfigurator djikstraConfigurator;
 
     public void attachViews(MainMapPanel mainMapPanel, ControlsPanel controlsPanel) {
         this.mainMapPanel = mainMapPanel;
@@ -251,74 +255,48 @@ public class MainController implements MouseListener {
 
         //add destinations
 
-
-
+        findDestination(vertex, baseEvent, eventsInArea);
+        //mainMapPanel.getMapPanel().repaint();
     }
 
-   /* private void createNode(BaseEvent baseEvent) {
 
-
-        Graph graph = new Graph();
-        graph.addNode(mainNode);
-        //add destinations
-
-        graph = findDestination(mainNode, baseEvent, eventsInArea, graph);
-
-        graph = graph.calculateShortestPathFromSource(graph, mainNode);
-        for (Node temp : graph.getNodes()) {
-            for (Map.Entry<Node, Integer> entry : temp.getAdjacentNodes().entrySet()) {
-                System.out.println("NODE DETECT " + entry.getKey().getName() + " " + entry.getValue());
-            }
-        }
-
-        mainNode.getAdjacentNodes().forEach(
-                (node, integer) -> System.out.println("MAIN NODE " + mainNode.getName() + " " + node.getName() + " and between them distance is " + integer)
-        );
-
-        System.out.println("PATH ");
-        for(Node temp : mainNode.getShortestPath()){
-            System.out.println(temp.getName());
-        }
-
-
-        mainMapPanel.getMapPanel().repaint();
-    }*/
-
-    /*private Graph findDestination(Node mainNode, BaseEvent baseEvent, List<BaseEvent> eventsInArea, Graph graph) {
+    private void findDestination(Vertex mainVertex, BaseEvent baseEvent, List<BaseEvent> eventsInArea) {
         for (BaseEvent temp : eventsInArea) {
-            Node node = new Node(temp.getFigure() + " " + temp.getPositionX() + " " + temp.getPositionY() + " " + count, temp);
+            Vertex vertex = new Vertex(temp.getFigure() + " " + temp.getPositionX() + " " + temp.getPositionY() + " " + count, temp);
             int distance = countDestination(baseEvent.getPositionX(), baseEvent.getPositionY(),
                     temp.getPositionX(), temp.getPositionY());
 
-            mainNode.addDestination(node, distance);
-            node.addDestination(mainNode, distance);
-            graph.addNode(node);
+            System.out.println("INSIDE OF FIND DESTINATION");
 
-            System.out.println();
+            mainVertex.addDestination(new Edge(vertex, distance));
+            vertex.addDestination(new Edge(mainVertex, distance));
+
+            //add line
             mainMapPanel.getMapPanel().addLine(
                     new Line2D.Double(baseEvent.getPositionX(), baseEvent.getPositionY(), temp.getPositionX(), temp.getPositionY())
             );
+
             mainMapPanel.getMapPanel().repaint();
 
             List<BaseEvent> nearestEvents = findNearestEvents(temp);
             if (nearestEvents != null && nearestEvents.size() > 0) {
                 List<BaseEvent> newNewTest = new ArrayList<>();
                 for (BaseEvent nearestEvent : nearestEvents) {
-                    for (Map.Entry<Node, Integer> entry : node.getAdjacentNodes().entrySet()) {
-                        if (!nearestEvents.contains(entry.getKey().getNodeEvent())) {
+                    for (Edge edge : vertex.getDestinations()) {
+                        if (!nearestEvents.contains(edge.getTarget().getEvent())) {
                             newNewTest.add(nearestEvent);
                         }
                     }
 
+
                 }
-                findDestination(node, temp, newNewTest, graph);
+                findDestination(vertex, temp, newNewTest);
             }
 
             count++;
         }
 
-        return graph;
-    }*/
+    }
 
     private List<BaseEvent> findNearestEvents(BaseEvent mainEvent) {
         int area = mainEvent.getScale() * 3;

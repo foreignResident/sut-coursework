@@ -23,7 +23,7 @@ public class DjikstraConfigurator {
             Vertex u = vertexQueue.poll();
 
             // Visit each edge exiting u
-            for (Edge e : u.getAdjacencies()) {
+            for (Edge e : u.getDestinations()) {
                 Vertex v = e.getTarget();
                 double weight = e.getWeight();
                 double distanceThroughU = u.getMinDistance() + weight;
