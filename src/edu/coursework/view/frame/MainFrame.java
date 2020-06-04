@@ -17,7 +17,7 @@ public class MainFrame extends JFrame {
     private ControlsPanel controlsPanel;
 
     public MainFrame() {
-        setSize(1200, 800);
+        setSize(1200, 780);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
