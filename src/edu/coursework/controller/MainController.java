@@ -1,8 +1,6 @@
 package edu.coursework.controller;
 
 import edu.coursework.model.*;
-import edu.coursework.model.djikstra.Graph;
-import edu.coursework.model.djikstra.Node;
 import edu.coursework.utils.Dimensions;
 import edu.coursework.view.panels.controls.ControlsPanel;
 import edu.coursework.view.panels.controls.EventRowItem;
